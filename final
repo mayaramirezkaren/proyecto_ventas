@@ -1,0 +1,181 @@
+#include <stdio.h>
+#include<stdlib.h>
+#include <windows.h>
+struct registro{
+   char producto[40];
+   float precio[6];
+   int cantidad[6];
+   char depto[40];
+   struct registro *sig;    
+};
+typedef struct registro nodo;
+
+struct compra{
+   char producto[40];
+   int venta[6];
+   int dif;
+   struct compra *sig;    
+};
+typedef struct compra nodo1;
+
+int mostrar_menu1(){
+    int opcion;
+    printf("\n================== SISTEMA DE VENTAS ===================");
+	printf("\n\t\tSeleccione el departamento que desee: ");
+	printf("\n1.Electronica  ");
+	printf("\n2.Hogar  ");
+	printf("\n3.Electrodomesticos  ");
+	printf("\n4.Videojuegos ");
+	printf("\n5.Alimentos ");
+	printf("\n6.Ingresar otro departamento: ");
+    printf("\nElige una de las opciones: ");
+    scanf("%d",&opcion);
+	return(opcion);
+}
+
+int mostrar_menu(){
+    int opcion;
+    system("cls");
+    printf("\n================== SISTEMA DE VENTAS ===================");
+    printf("\n1. Insertar producto.");
+    printf("\n2. Borrar algun producto");
+    printf("\n3. Venta de algun producto..");
+    printf("\nPresione 0 para salir del programa.");
+    printf("\nElige una de las opciones: ");
+    scanf("%d",&opcion);
+    return(opcion);
+}
+
+void ingresar_producto(nodo *inicio){
+	FILE *arch;
+	arch=fopen("inventario.txt","a+");
+    nodo *registro;
+    char seguir='s';
+    registro=inicio;
+    printf("\n================ INVENTARIO ==================");
+    fprintf(arch,"\n================ INVENTARIO ==================");
+	printf("\nNombre del departamento: ");
+	scanf(" %[^\n]",registro->depto);
+	fprintf(arch,"\n ---->%s",registro->depto);
+    do{
+		printf("\nProducto: ");
+		scanf(" %[^\n]",registro->producto);
+		printf("\nPrecio:  ");
+		scanf(" %[^\n]",registro->precio);
+		printf("\nCantidad inicial: ");
+		scanf(" %[^\n]",registro->cantidad);
+		fprintf(arch,"\n\tProducto: %s",registro->producto);
+		fprintf(arch,"\n\tPrecio: %s",registro->precio);
+		fprintf(arch,"\n\tCantidad inicial: %s",registro->cantidad);
+		printf("\nDeseas añadir otro producto (s/n)?: ");
+		scanf(" %c",&seguir);
+	       if(seguir=='s'||seguir=='S'){
+	          registro->sig=(nodo *) malloc(1*sizeof(nodo)); 
+	          registro=registro->sig;
+	       }
+		       else
+			   {
+		          printf("\nFINAL DEL INVENTARIO");
+		          registro->sig=0;     
+		       }
+    }while(seguir=='s'||seguir=='S');
+    fclose(arch);
+    return;
+}
+void venta_producto(nodo1 *inicio1, nodo *inicio){
+	FILE *doc,*fichero;
+	doc = fopen("venta.txt","a+");
+	fichero = fopen("InventarioMod.txt","a+");
+	nodo1 *compra;
+	nodo *registro;
+	compra=inicio1;
+	registro=inicio;
+	int total;
+	printf("\n================ INVENTARIO ==================");
+	printf("\n================ COMPRA==================");
+	fprintf(doc,"\n================ COMPRA ==================");
+	printf("\nNombre del departamento: ");
+	scanf(" %[^\n]",registro->depto);
+	fprintf(doc,"\n %s",registro->depto);
+   do{
+   	fprintf(fichero,"\n\t============INVENTARIO MODIFICADO=================");
+   	printf("\n\t Que desea comprar: ");
+   	printf("\n\tProducto: %s",registro->producto);
+	fprintf(doc,"\n\tProducto: %s",registro->producto);  
+	fprintf(fichero,"\n\tProducto: %s",registro->producto);
+	printf("\n\tPrecio: %s",registro->precio);  
+	fprintf(doc,"\n\tPrecio: %s",registro->precio); 
+	fprintf(fichero,"\n\tPrecio: %s",registro->precio);
+	printf("\n\tCantidad: %s",registro->cantidad);
+    printf("\nCantidad que desea comprar: ");
+    scanf(" %[^\n]",compra->venta);
+	fprintf(doc,"\nCantidad que compro: %s",compra->venta);
+		if(compra->venta>registro->cantidad)
+		{
+			printf("\n\tCANTIDAD INSUFICIENTE");
+			fprintf(fichero,"\n\tCANTIDIAD INSUFICIENTE");
+		}
+		else
+		{
+			compra->dif=registro->cantidad-compra->venta;
+			fprintf(fichero,"\nCantidad final: %d",compra->dif);
+		}
+    registro=registro->sig;
+   }while(registro!=0);
+   printf("\n\nPara continuar presione cualquier tecla.");
+   fflush(stdin);
+   getchar();
+   fclose(doc);
+   fclose(fichero);
+   return;
+}
+nodo *borrar_producto(nodo *inicio,char aux_nombre[]){
+   nodo *registro;
+   char seguir='s';
+   registro=inicio; 
+   if(strcmp(registro->producto,aux_nombre)==0)
+     {
+     	inicio=registro->sig;
+     }
+   else  
+   do{
+        if(strcmp((registro->sig)->producto,aux_nombre)==0){
+            registro->sig=(registro->sig)->sig;
+            seguir='n';
+        }
+        else
+            registro=registro->sig; 
+    }while(seguir=='s' && registro!=0);
+   return;
+}
+main(){	
+    nodo *inicio;
+    char aux_nombre[40],aux_nombre_anterior[40];
+    nodo1 *inicio1;
+    inicio=(nodo *) malloc(1*sizeof(nodo));
+    inicio1=(nodo1 *) malloc(1*sizeof(nodo1));
+    int opcion;
+    do{
+        opcion=mostrar_menu1();
+        opcion=mostrar_menu();
+        switch(opcion){
+            case 1:
+                    ingresar_producto(inicio);
+                    break;
+            case 2:
+                    printf("\nEscriba el producto que desea borrar de la lista: ");
+                    scanf(" %[^\n]",aux_nombre);
+                    borrar_producto(inicio,aux_nombre);
+                    break;
+            case 3:
+            	    venta_producto(inicio1,inicio);
+            	    mostrar_menu1();
+                    break;
+            default:
+                 printf("\nRegresa pronto.");
+                 getchar();     
+        }
+    }while(opcion!=0);
+    getchar();
+    getchar();
+}
