@@ -148,6 +148,22 @@ nodo *borrar_producto(nodo *inicio,char aux_nombre[]){
    return;
 }
 main(){	
+	 printf("\n\t\t%c=========================================%c",201,187);
+     printf("\n\t\t%c Universidad Nacional Aut%cnoma de M%cxico %c",186,162,130,186);
+     printf("\n\t\t%c=========================================%c",200,188);
+     printf("\n\t\t");
+     printf("\n\t%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",201,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,187);	printf("\t\t %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196);
+     printf("\n\t%c Fac. de Ingenier%ca %c",186,161,186); 																									printf("\t\t %c Proyecto: Sistema de Ventas %c",179,179);
+     printf("\n\t%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",200,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,205,188);    printf("\t\t %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c",196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196,196);
+
+     printf("\n\t\t");
+     printf("\n\t\t\t      Integrantes:");
+     printf("\n\t\t");
+     printf("\n\t L%cpez Vite Erick Misael \n\t Maya Ram%crez Karen \n\t Torres Caballero Bruno",162,161);
+
+     printf("\n\t\t");
+     printf("\n\t\t\t%c Profesor: Ing. Fernando Robles Mu%coz %c",195,164,180);
+     printf("\n\t\t\t%c---------------------------------------------%c ",193,193);
     nodo *inicio;
     char aux_nombre[40],aux_nombre_anterior[40];
     nodo1 *inicio1;
@@ -168,7 +184,6 @@ main(){
                     break;
             case 3:
             	    venta_producto(inicio1,inicio);
-            	    mostrar_menu1();
                     break;
             default:
                  printf("\nRegresa pronto.");
